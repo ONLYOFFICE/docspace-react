@@ -2,3 +2,5 @@
 /*.tgz
 /dist
 /storybook-static
+
+*storybook.log
