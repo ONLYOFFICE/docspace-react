@@ -13,104 +13,104 @@ This procedure requires [Node.js (and npm)](https://nodejs.org/en).
 This procedure creates a [basic React application](https://github.com/facebook/create-react-app) and installs an ONLYOFFICE Docs editor in it.
 
 1. Create a new React project named *docspace-react-demo* using the *Create React App* package:
-```
-npx create-react-app docspace-react-demo
-```
+    ```
+    npx create-react-app docspace-react-demo
+    ```
 
 2. Go to the newly created directory:
-```
-cd docspace-react-demo
-```
+    ```
+    cd docspace-react-demo
+    ```
 
 3. Install ONLYOFFICE DocSpace React component from **npm** and save it to the *package.json* file with *--save*:
-```
-npm install --save @onlyoffice/docspace-react
-```
+    ```
+    npm install --save @onlyoffice/docspace-react
+    ```
 
 4. Open the *./src/App.js* file in the *docspace-react-demo* project and replace its contents with the following code:
 
-```
-import React, { useRef } from 'react';
-import { DocSpace } from "@onlyoffice/docspace-react";
+    ```
+    import React, { useRef } from 'react';
+    import { DocSpace } from "@onlyoffice/docspace-react";
 
-const onAppReady = function (e) {
-    console.log("ONLYOFFICE DocSpace App is ready!");
-};
+    const onAppReady = function (e) {
+        console.log("ONLYOFFICE DocSpace App is ready!");
+    };
 
-const onAppError = (e) => {
-  console.log(e);
-}
+    const onAppError = (e) => {
+    console.log(e);
+    }
 
-const onLoadComponentError = function (errorCode, errorDescription) {
-    console.log(errorDescription);
-};
+    const onLoadComponentError = function (errorCode, errorDescription) {
+        console.log(errorDescription);
+    };
 
-export default function App() {
-    return (
-        <pre>
-            <DocSpace
-                url="http://example-onlyoffice.com/"
-                config={{
-                    "frameId": "onlyoffice-docspace"
-                    "mode": "manager",
-                    "width": "100%",
-                    "height": "100%",
-                    "events": {
-                      "onAppReady": "onAppReady",
-                      "onAppError": "onAppError",
-                    }
-                }}
-                onLoadComponentError={onLoadComponentError}
-            />
-        </>
-    );
-}
-```
-Replace the following lines with your own data:
-* **"http://example-onlyoffice.com/"** - replace with the URL of your server;
+    export default function App() {
+        return (
+            <pre>
+                <DocSpace
+                    url="http://example-onlyoffice.com/"
+                    config={{
+                        "frameId": "onlyoffice-docspace"
+                        "mode": "manager",
+                        "width": "100%",
+                        "height": "100%",
+                        "events": {
+                        "onAppReady": "onAppReady",
+                        "onAppError": "onAppError",
+                        }
+                    }}
+                    onLoadComponentError={onLoadComponentError}
+                />
+            </>
+        );
+    }
+    ```
+    Replace the following lines with your own data:
+    * **"http://example-onlyoffice.com/"** - replace with the URL of your server;
 
-This JavaScript file will create the *App* component containing the ONLYOFFICE DocSpace configured with basic features.
+    This JavaScript file will create the *App* component containing the ONLYOFFICE DocSpace configured with basic features.
 
 5. Test the application using the Node.js development server:
-* To start the development server, navigate to the *docspace-react-demo* directory and run:
-```
-npm run start
-```
-* To stop the development server, select on the command line or command prompt and press *Ctrl+C*.
+    * To start the development server, navigate to the *docspace-react-demo* directory and run:
+    ```
+    npm run start
+    ```
+    * To stop the development server, select on the command line or command prompt and press *Ctrl+C*.
 
 ## Deploying the demo React application
 
 The easiest way to deploy the application to a production environment is to install [serve](https://github.com/vercel/serve) and create a static server:
 1. Install the *serve* package globally:
-```
-npm install -g serve
-```
+    ```
+    npm install -g serve
+    ```
 
 2. Serve your static site on the 3000 port:
-```
-serve -s build
-```
-Another port can be adjusted using the *-l* or *--listen* flags:
-```
-serve -s build -l 4000
-```
+    ```
+    serve -s build
+    ```
+    Another port can be adjusted using the *-l* or *--listen* flags:
+    ```
+    serve -s build -l 4000
+    ```
 
 3. To serve the project folder, go to it and run the *serve* command:
-```
-cd docspace-react-demo
-serve
-```
+    ```
+    cd docspace-react-demo
+    serve
+    ```
 
 Now you can deploy the application to the created server:
 1. Navigate to the *docspace-react-demo* directory and run:
-```
-npm run build
-```
-The *build* directory will be created with a production build of your app.
+    ```
+    npm run build
+    ```
+    The *build* directory will be created with a production build of your app.
 
 2. Copy the contents of the *docspace-react-demo/build* directory to the root directory of the web server (to the *docspace-react-demo* folder).
 
-The application will be deployed on the web server (*http://localhost:3000* by default).
+    The application will be deployed on the web server (*http://localhost:3000* by default).
 
 ## API
 ### Props
