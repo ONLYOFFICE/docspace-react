@@ -2,7 +2,7 @@
 
 This repo contains the ONLYOFFICE Docspace React component which integrates [ONLYOFFICE DocSpace](https://github.com/ONLYOFFICE/DocSpace) into [React](https://react.dev/) projects.
 
-**Please note**: Before working with this component, you need to create [ONLYOFFICE DocSpace portal](https://www.onlyoffice.com/docspace-registration.aspx).
+**Please note**: To work with this component, you need to have ONLYOFFICE DocSpace. If you are new to DocSpace, [create an account](https://www.onlyoffice.com/docspace-registration.aspx).
 
 ## Prerequisites
 
