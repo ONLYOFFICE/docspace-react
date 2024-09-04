@@ -87,6 +87,7 @@ export type TFrameEvents = {
   onAppError: null | ((e: Event | string) => void);
   onAppReady: null | ((e: Event) => void);
   onNoAccess: null | ((e: Event) => void);
+  onNotFound: null | ((e: Event) => void);
   onContentReady: null | ((e: Event) => void);
   onAuthSuccess: null | ((e: Event) => void);
   onCloseCallback: null | ((e: Event) => void);
