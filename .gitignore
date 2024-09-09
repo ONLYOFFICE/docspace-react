@@ -1,0 +1,6 @@
+/node_modules
+/*.tgz
+/dist
+/storybook-static
+
+*storybook.log

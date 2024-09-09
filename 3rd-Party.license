@@ -1,0 +1,6 @@
+DocSpace integration into Pipedrive uses code from the following 3rd party projects:
+
+
+lodash              - Lodash modular utilities. (https://github.com/lodash/lodash/blob/main/LICENSE)
+License:              MIT
+License File:         lodash.license
