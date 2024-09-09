@@ -56,8 +56,8 @@ This procedure creates a [basic React application](https://github.com/facebook/c
                         "width": "100%",
                         "height": "100%",
                         "events": {
-                        "onAppReady": "onAppReady",
-                        "onAppError": "onAppError",
+                            "onAppReady": "onAppReady",
+                            "onAppError": "onAppError",
                         }
                     }}
                     onLoadComponentError={onLoadComponentError}
