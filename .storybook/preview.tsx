@@ -12,7 +12,7 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: "100%" }}>
+      <div style={{ display: 'grid', height: "100%", minHeight: "400px" }}>
         <Story />
       </div>
     ),
