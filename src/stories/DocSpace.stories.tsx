@@ -64,7 +64,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Manager: Story = {
   args: {
-    config: defaultConfig,
+    config: {
+      ...defaultConfig,
+      frameId: "onlyoffice-docspace-manager",
+    },
     email: process.env.DOCSPACE_LOGIN,
     onRequestPasswordHash: onRequestPasswordHash,
     onUnsuccessLogin: onUnsuccessLogin
@@ -75,6 +78,7 @@ export const RoomSelector: Story = {
   args: {
     config: {
       ...defaultConfig,
+      frameId: "onlyoffice-docspace-room-selector",
       mode: "room-selector"
     } as TFrameConfig,
     email: process.env.DOCSPACE_LOGIN,
@@ -87,6 +91,7 @@ export const FileSelector: Story = {
   args: {
     config: {
       ...defaultConfig,
+      frameId: "onlyoffice-docspace-file-selector",
       mode: "file-selector"
     } as TFrameConfig,
     email: process.env.DOCSPACE_LOGIN,
@@ -99,6 +104,7 @@ export const System: Story = {
   args: {
     config: {
       ...defaultConfig,
+      frameId: "onlyoffice-docspace-system",
       mode: "system"
     },
   },
