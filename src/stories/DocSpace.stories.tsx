@@ -27,8 +27,12 @@ const onAppError = (e: Event) => {
   alert(e);
 }
 
-const onLoadComponentError = (code: number, message: string) => {
-  alert(message);
+const onRequestPasswordHash = (email: string) => {
+  return process.env.DOCSPACE_PASSWORD_HASH || "";
+}
+
+const onUnsuccessLogin = () => {
+  alert("onUnsuccessLogin");
 }
 
 const defaultConfig = {
@@ -60,7 +64,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Manager: Story = {
   args: {
-    config: defaultConfig
+    config: defaultConfig,
+    email: process.env.DOCSPACE_LOGIN,
+    onRequestPasswordHash: onRequestPasswordHash,
+    onUnsuccessLogin: onUnsuccessLogin
   }
 };
 
@@ -70,6 +77,9 @@ export const RoomSelector: Story = {
       ...defaultConfig,
       mode: "room-selector"
     } as TFrameConfig,
+    email: process.env.DOCSPACE_LOGIN,
+    onRequestPasswordHash: onRequestPasswordHash,
+    onUnsuccessLogin: onUnsuccessLogin
   },
 };
 
@@ -79,6 +89,9 @@ export const FileSelector: Story = {
       ...defaultConfig,
       mode: "file-selector"
     } as TFrameConfig,
+    email: process.env.DOCSPACE_LOGIN,
+    onRequestPasswordHash: onRequestPasswordHash,
+    onUnsuccessLogin: onUnsuccessLogin
   },
 };
 
