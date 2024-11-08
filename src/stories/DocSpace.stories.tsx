@@ -35,6 +35,10 @@ const onUnsuccessLogin = () => {
   alert("onUnsuccessLogin");
 }
 
+const onLoadComponentError = (code: number, message: string) => {
+  alert(message);
+}
+
 const defaultConfig = {
   frameId: "onlyoffice-docspace",
   mode: "manager",
