@@ -28,7 +28,8 @@ type DocSpaceProps = {
   config: TFrameConfig;
   email?: string,
   onRequestPasswordHash?: (email: string) => string,
-  onUnsuccessLogin?: () => void
+  onUnsuccessLogin?: () => void,
+  onSetDocspaceInstance?: (instance: SDKInstance) => void;
 };
 
 const DocSpace: React.FC<DocSpaceProps> = ({
@@ -36,7 +37,8 @@ const DocSpace: React.FC<DocSpaceProps> = ({
   config,
   email,
   onRequestPasswordHash,
-  onUnsuccessLogin
+  onUnsuccessLogin,
+  onSetDocspaceInstance
 }) => {
   const docspaceUrl = stripTrailingSlash(url);
   const internalConfig = cloneDeep(config);
@@ -78,6 +80,10 @@ const DocSpace: React.FC<DocSpaceProps> = ({
 
   const openDocspace = (config: TFrameConfig) => {
     docspaceInstance = docspaceSDK.initFrame(config);
+
+    if (onSetDocspaceInstance) {
+      onSetDocspaceInstance(docspaceInstance);
+    }
   }
 
   const loginDocspace = (email: string, passwordHash: string) => {
