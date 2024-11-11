@@ -78,6 +78,20 @@ export const Manager: Story = {
   }
 };
 
+export const Editor: Story = {
+  args: {
+    config: {
+      ...defaultConfig,
+      frameId: "onlyoffice-docspace-editor",
+      mode: "editor",
+      id: process.env.DOCSPACE_FILE_ID as unknown as number
+    },
+    email: process.env.DOCSPACE_LOGIN,
+    onRequestPasswordHash: onRequestPasswordHash,
+    onUnsuccessLogin: onUnsuccessLogin
+  }
+};
+
 export const RoomSelector: Story = {
   args: {
     config: {
