@@ -15,4 +15,3 @@
 */
 
 export { default as DocSpace } from "./DocSpace";
-export * from "./types";

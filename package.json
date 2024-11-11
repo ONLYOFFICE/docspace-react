@@ -30,6 +30,7 @@
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@chromatic-com/storybook": "^1.7.0",
+    "@onlyoffice/docspace-sdk-js": "file:onlyoffice-docspace-sdk-js-v0.0.1.tgz",
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
