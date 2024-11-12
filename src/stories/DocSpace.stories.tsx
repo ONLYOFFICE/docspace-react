@@ -16,7 +16,7 @@
 
 import type { Meta, StoryObj } from '@storybook/react';
 import DocSpace from '../DocSpace';
-import { TFrameConfig, TFrameEvents } from '../types';
+import { TFrameConfig, TFrameEvents } from "@onlyoffice/docspace-sdk-js/dist/types/types";
 import './stories.css';
 
 const onAppReady = (e: Event) => {
