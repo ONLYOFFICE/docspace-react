@@ -14,4 +14,11 @@
 * limitations under the License.
 */
 
-export { default as DocSpace } from "./DocSpace";
+
+export const stripTrailingSlash = (url: string) => {
+  if (url.endsWith("/")) {
+    return url.slice(0, -1);
+  }
+
+  return url;
+}

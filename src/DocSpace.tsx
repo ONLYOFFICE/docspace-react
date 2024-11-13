@@ -15,15 +15,13 @@
 */
 
 import React, { useEffect } from "react";
-import loadScript from "./utils/loadScript";
-import { TFrameConfig } from "./types";
-import cloneDeep from "lodash/cloneDeep";
 
-declare global {
-  interface Window {
-    DocSpace?: any;
-  }
-}
+import cloneDeep from "lodash/cloneDeep";
+import SDK from "@onlyoffice/docspace-sdk-js";
+import { TFrameConfig, TFrameEvents } from "@onlyoffice/docspace-sdk-js/dist/types/types";
+import SDKInstance from "@onlyoffice/docspace-sdk-js/dist/types/instance";
+import { stripTrailingSlash } from "./utils";
+
 
 type DocSpaceProps = {
   url: string;
@@ -31,7 +29,7 @@ type DocSpaceProps = {
   email?: string,
   onRequestPasswordHash?: (email: string) => string,
   onUnsuccessLogin?: () => void,
-  onLoadComponentError?: (errorCode: number, errorDescription: string) => void
+  onSetDocspaceInstance?: (instance: SDKInstance) => void;
 };
 
 const DocSpace: React.FC<DocSpaceProps> = ({
@@ -40,118 +38,96 @@ const DocSpace: React.FC<DocSpaceProps> = ({
   email,
   onRequestPasswordHash,
   onUnsuccessLogin,
-  onLoadComponentError,
+  onSetDocspaceInstance
 }) => {
-  const DOCSPACE_API_URL = "static/scripts/sdk/1.0.1/api.js";
+  const docspaceUrl = stripTrailingSlash(url);
+  const internalConfig = cloneDeep(config);
+  const docspaceSDK = new SDK();
+
+  var docspaceInstance: SDKInstance;
 
   useEffect(() => {
     console.log(`[ONLYOFFICE DocSpace] Mount component: frameId[${config.frameId}]`);
-    loadScript(url.endsWith("/") ? url + DOCSPACE_API_URL : url + "/" + DOCSPACE_API_URL, "onlyoffice-api-script")
-      .then(() => onLoad())
-      .catch(() => onError(-2));
+
+    internalConfig.src = docspaceUrl;
+
+    if (!email || !onRequestPasswordHash) {
+      openDocspace(internalConfig);
+    }
+
+    if (email && onRequestPasswordHash) {
+      const passwordHash = onRequestPasswordHash(email);
+
+      loginDocspace(email, passwordHash).then(() => {
+        openDocspace(internalConfig);
+      }).catch(() => {
+        if (onUnsuccessLogin) {
+          onUnsuccessLogin();
+        } else {
+          openDocspace(internalConfig);
+        }
+      });
+    }
 
     return () => {
-      console.log(`[ONLYOFFICE DocSpace] Unmount component: frameId[${config.frameId}]`);
-      if (window?.DocSpace?.SDK?.frames[config.frameId]) {
-        console.log(`Destroy DocSpace: frameId[${config.frameId}]`);
-        window?.DocSpace?.SDK?.frames[config.frameId].destroyFrame();
+      console.log(`[ONLYOFFICE DocSpace] Unmount component: frameId[${internalConfig.frameId}]`);
+      if (docspaceInstance) {
+        console.log(`Destroy DocSpace: frameId[${internalConfig.frameId}]`);
+        docspaceInstance.destroyFrame();
       }
     };
   }, []);
 
-  const onLoad = () => {
-    try {
-      if (!window.DocSpace) onError(-3);
-      if (window?.DocSpace?.SDK?.frames[config.frameId]) {
-        console.log(`[ONLYOFFICE DocSpace] Skip loading. DocSpace instance already exists: frameId[${config.frameId}]`, config.frameId);
-        return;
-      }
+  const openDocspace = (config: TFrameConfig) => {
+    docspaceInstance = docspaceSDK.initFrame(config);
 
-      if (email && onRequestPasswordHash) {
-        loginByPasswordHash(
-          cloneDeep(config),
-          email,
-          onRequestPasswordHash,
-          () => {
-            window.DocSpace.SDK.initFrame(cloneDeep(config));
-          },
-          () => {
-            if (onUnsuccessLogin) {
-              onUnsuccessLogin();
-            } else {
-              window.DocSpace.SDK.initFrame(cloneDeep(config));
-            }
-          },
-        );
-      } else {
-        window.DocSpace.SDK.initFrame(cloneDeep(config));
-      }
-
-    } catch (err: any) {
-      console.error(err);
-      onError(-1);
+    if (onSetDocspaceInstance) {
+      onSetDocspaceInstance(docspaceInstance);
     }
-  };
+  }
 
-  const loginByPasswordHash = (
-    config: TFrameConfig,
-    email: string,
-    onRequestPasswordHash: (email: string) => string,
-    onSuccessLogin: () => void,
-    onUnSuccessLogin: () => void,
-  ) => {
-    config.events = config.events || {};
-    config.events.onAppReady = async (e: Event) => {
-      const userInfo = await window.DocSpace.SDK.frames[config.frameId].getUserInfo();
+  const loginDocspace = (email: string, passwordHash: string) => {
+    return new Promise((resolve, reject) => {
+      var loginDocspaceInstance: SDKInstance;
 
-      if (userInfo && userInfo.email === email) {
-        onSuccessLogin();
-      } else {
-        const passwordHash = await onRequestPasswordHash(email);
+      if (passwordHash == null || passwordHash.length <= 0) {
+        reject();
+      }
 
-        if (passwordHash == null || passwordHash.length <= 0) {
-          window.DocSpace.SDK.frames[config.frameId].destroyFrame();
-          onUnSuccessLogin();
-          return;
+      async function _login(e?: Event | object | string) {
+        const userInfo = await loginDocspaceInstance?.getUserInfo() as { email: string };
+
+        if (userInfo && userInfo.email === email) {
+          resolve(null);
+        } else {
+          loginDocspaceInstance?.login(email, passwordHash)
+            .then((response: any) => {
+              if (response.status && response.status !== 200) {
+                loginDocspaceInstance?.destroyFrame();
+                reject();
+                return;
+              }
+
+              resolve(null);
+            });
         }
+      };
 
-        window.DocSpace.SDK.frames[config.frameId].login(email, passwordHash)
-          .then((response: any) => {
-            if (response.status && response.status !== 200) {
-              window.DocSpace.SDK.frames[config.frameId].destroyFrame();
-              onUnSuccessLogin();
-              return;
-            }
+      const systemConfig = {
+        src: docspaceUrl,
+        frameId: internalConfig.frameId,
+        width: internalConfig.width,
+        height: internalConfig.height,
+        theme: internalConfig.theme,
+        events: {
+          onAppReady: _login,
+          onAppError: internalConfig.events?.onAppError
+        } as TFrameEvents
+      } as TFrameConfig;
 
-            onSuccessLogin();
-          });
-      }
-    };
-
-    window.DocSpace.SDK.initSystem(config);
-  };
-
-  const onError = (errorCode: number) => {
-    let message;
-
-    switch (errorCode) {
-      case -2:
-        message = `Error load DocSpace from ${url}, frameId[${config.frameId}]`;
-        break;
-      case -3:
-        message = `DocSpace is not defined. frameId[${config.frameId}]`;
-        break;
-      default:
-        message = `Unknown error loading component. frameId[${config.frameId}]`;
-        errorCode = -1;
-    }
-
-    if (typeof onLoadComponentError == "undefined") {
-      console.error(`[ONLYOFFICE DocSpace] ${message}`);
-    } else {
-      onLoadComponentError(errorCode, message);
-    }
-  };
+      loginDocspaceInstance = docspaceSDK.initSystem(systemConfig)
+    })
+  }
 
   return <div id={config.frameId}></div>;
 };
