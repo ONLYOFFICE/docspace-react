@@ -32,6 +32,7 @@ This procedure creates a [basic React application](https://github.com/facebook/c
     ```
     import React, { useRef } from 'react';
     import { DocSpace } from "@onlyoffice/docspace-react";
+    import SDKInstance from "@onlyoffice/docspace-sdk-js/dist/types/instance";
 
     const onAppReady = function (e) {
         console.log("ONLYOFFICE DocSpace App is ready!");
@@ -41,8 +42,8 @@ This procedure creates a [basic React application](https://github.com/facebook/c
     console.log(e);
     }
 
-    const onLoadComponentError = function (errorCode, errorDescription) {
-        console.log(errorDescription);
+    const onSetDocspaceInstance = function (instance: SDKInstance) {
+        console.log(instance);
     };
 
     export default function App() {
@@ -60,7 +61,7 @@ This procedure creates a [basic React application](https://github.com/facebook/c
                             "onAppError": "onAppError",
                         }
                     }}
-                    onLoadComponentError={onLoadComponentError}
+                    onSetDocspaceInstance={onSetDocspaceInstance}
                 />
             </>
         );
@@ -121,7 +122,7 @@ Now you can deploy the application to the created server:
 | `email` | string | null | no | The user email to login in DocSpace. |
 | `onRequestPasswordHash` | (email: string) => string | null | no | The function called when the email parameter is passed, returning the passwordHash for login in DocSpace. |
 | `onUnsuccessLogin` | () => void | null | no | The function called when DocSpace account login failed. |
-| `onLoadComponentError` | (errorCode: number, errorDescription: string) => void | null | no | The function called when an error occurs while loading a component |
+| `onSetDocspaceInstance` | (instance: SDKInstance) => void | null | no | The function called when DocSpace instance is obtained. The instance provides API methods for working with DocSpace. |
 
 ## Storybook
 
