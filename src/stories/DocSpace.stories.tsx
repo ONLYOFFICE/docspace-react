@@ -1,5 +1,5 @@
 /*
-* (c) Copyright Ascensio System SIA 2024
+* (c) Copyright Ascensio System SIA 2025
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 import type { Meta, StoryObj } from '@storybook/react';
 import DocSpace from '../DocSpace';
-import { TFrameConfig, TFrameEvents } from '../types';
+import { TFrameConfig, TFrameEvents } from "@onlyoffice/docspace-sdk-js/dist/types/types";
 import './stories.css';
 
 const onAppReady = (e: Event) => {
@@ -27,8 +27,12 @@ const onAppError = (e: Event) => {
   alert(e);
 }
 
-const onLoadComponentError = (code: number, message: string) => {
-  alert(message);
+const onRequestPasswordHash = (email: string) => {
+  return process.env.DOCSPACE_PASSWORD_HASH || "";
+}
+
+const onUnsuccessLogin = () => {
+  alert("onUnsuccessLogin");
 }
 
 const defaultConfig = {
@@ -50,8 +54,7 @@ const meta = {
   },
   tags: ['autodocs'],
   args: {
-    url: process.env.DOCSPACE_URL,
-    onLoadComponentError: onLoadComponentError
+    url: process.env.DOCSPACE_URL
   }
 } satisfies Meta<typeof DocSpace>;
 
@@ -60,7 +63,27 @@ type Story = StoryObj<typeof meta>;
 
 export const Manager: Story = {
   args: {
-    config: defaultConfig
+    config: {
+      ...defaultConfig,
+      frameId: "onlyoffice-docspace-manager",
+    },
+    email: process.env.DOCSPACE_LOGIN,
+    onRequestPasswordHash: onRequestPasswordHash,
+    onUnsuccessLogin: onUnsuccessLogin
+  }
+};
+
+export const Editor: Story = {
+  args: {
+    config: {
+      ...defaultConfig,
+      frameId: "onlyoffice-docspace-editor",
+      mode: "editor",
+      id: process.env.DOCSPACE_FILE_ID as unknown as number
+    },
+    email: process.env.DOCSPACE_LOGIN,
+    onRequestPasswordHash: onRequestPasswordHash,
+    onUnsuccessLogin: onUnsuccessLogin
   }
 };
 
@@ -68,8 +91,12 @@ export const RoomSelector: Story = {
   args: {
     config: {
       ...defaultConfig,
+      frameId: "onlyoffice-docspace-room-selector",
       mode: "room-selector"
     } as TFrameConfig,
+    email: process.env.DOCSPACE_LOGIN,
+    onRequestPasswordHash: onRequestPasswordHash,
+    onUnsuccessLogin: onUnsuccessLogin
   },
 };
 
@@ -77,8 +104,12 @@ export const FileSelector: Story = {
   args: {
     config: {
       ...defaultConfig,
+      frameId: "onlyoffice-docspace-file-selector",
       mode: "file-selector"
     } as TFrameConfig,
+    email: process.env.DOCSPACE_LOGIN,
+    onRequestPasswordHash: onRequestPasswordHash,
+    onUnsuccessLogin: onUnsuccessLogin
   },
 };
 
@@ -86,6 +117,7 @@ export const System: Story = {
   args: {
     config: {
       ...defaultConfig,
+      frameId: "onlyoffice-docspace-system",
       mode: "system"
     },
   },

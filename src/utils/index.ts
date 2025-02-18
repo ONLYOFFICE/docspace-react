@@ -14,24 +14,11 @@
 * limitations under the License.
 */
 
-import React from "react";
-import { render } from "@testing-library/react";
 
-import DocSpace from "../DocSpace";
-import { TFrameConfig } from "../types";
+export const stripTrailingSlash = (url: string) => {
+  if (url.endsWith("/")) {
+    return url.slice(0, -1);
+  }
 
-describe("DocSpace", () => {
-  test("renders the DocumentEditor component", () => {
-    render(
-      <DocSpace
-        url="https://example-onlyoffice.com/"
-        config={{
-          frameId: "onlyoffice-docspace",
-          mode: "manager",
-          width: "100%",
-          height: "100%",
-        } as TFrameConfig}
-      />
-    );
-  });
-});
+  return url;
+}
