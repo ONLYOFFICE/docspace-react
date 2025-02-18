@@ -35,10 +35,6 @@ const onUnsuccessLogin = () => {
   alert("onUnsuccessLogin");
 }
 
-const onLoadComponentError = (code: number, message: string) => {
-  alert(message);
-}
-
 const defaultConfig = {
   frameId: "onlyoffice-docspace",
   mode: "manager",
@@ -58,8 +54,7 @@ const meta = {
   },
   tags: ['autodocs'],
   args: {
-    url: process.env.DOCSPACE_URL,
-    onLoadComponentError: onLoadComponentError
+    url: process.env.DOCSPACE_URL
   }
 } satisfies Meta<typeof DocSpace>;
 
