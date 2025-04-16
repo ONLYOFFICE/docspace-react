@@ -22,7 +22,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@onlyoffice/docspace-sdk-js": "^1.1.0",
+    "@onlyoffice/docspace-sdk-js": "^2.0.0",
     "lodash": "4.17.21"
   },
   "devDependencies": {
