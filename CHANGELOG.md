@@ -1,6 +1,6 @@
 # Change Log
 
-##
+## 2.1.0
 - @onlyoffice/docspace-sdk-js:2.0.0
 
 ## 2.0.0
