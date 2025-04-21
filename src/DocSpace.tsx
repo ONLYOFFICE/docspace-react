@@ -18,10 +18,10 @@ import React, { useEffect } from "react";
 
 import cloneDeep from "lodash/cloneDeep";
 import SDK from "@onlyoffice/docspace-sdk-js";
+import { SDKInstance } from "@onlyoffice/docspace-sdk-js/dist/types/instance";
 import { TFrameConfig, TFrameEvents } from "@onlyoffice/docspace-sdk-js/dist/types/types";
-import SDKInstance from "@onlyoffice/docspace-sdk-js/dist/types/instance";
-import { stripTrailingSlash } from "./utils";
 
+import { stripTrailingSlash } from "./utils";
 
 type DocSpaceProps = {
   url: string;
