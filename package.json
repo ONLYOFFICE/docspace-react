@@ -4,7 +4,8 @@
   "description": "React component for ONLYOFFICE DocSpace",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/ONLYOFFICE/docspace-react/issues"
+    "url": "https://github.com/ONLYOFFICE/docspace-react/issues",
+    "email": "support@onlyoffice.com"
   },
   "homepage": "https://www.onlyoffice.com",
   "repository": {
