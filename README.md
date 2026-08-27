@@ -30,45 +30,42 @@ This procedure creates a [basic React application](https://github.com/facebook/c
 4. Open the *./src/App.js* file in the *docspace-react-demo* project and replace its contents with the following code:
 
     ```
-    import React, { useRef } from 'react';
+    import React from 'react';
     import { DocSpace } from "@onlyoffice/docspace-react";
-    import SDKInstance from "@onlyoffice/docspace-sdk-js/dist/types/instance";
 
     const onAppReady = function (e) {
         console.log("ONLYOFFICE DocSpace App is ready!");
     };
 
     const onAppError = (e) => {
-    console.log(e);
-    }
+        console.log(e);
+    };
 
-    const onSetDocspaceInstance = function (instance: SDKInstance) {
+    const onSetDocspaceInstance = function (instance) {
         console.log(instance);
     };
 
     export default function App() {
         return (
-            <pre>
-                <DocSpace
-                    url="http://example-onlyoffice.com/"
-                    config={{
-                        "frameId": "onlyoffice-docspace"
-                        "mode": "manager",
-                        "width": "100%",
-                        "height": "100%",
-                        "events": {
-                            "onAppReady": "onAppReady",
-                            "onAppError": "onAppError",
-                        }
-                    }}
-                    onSetDocspaceInstance={onSetDocspaceInstance}
-                />
-            </>
+            <DocSpace
+                config={{
+                    "src": "http://example-onlyoffice.com",
+                    "frameId": "onlyoffice-docspace",
+                    "mode": "manager",
+                    "width": "100%",
+                    "height": "100%",
+                    "events": {
+                        "onAppReady": onAppReady,
+                        "onAppError": onAppError
+                    }
+                }}
+                onSetDocspaceInstance={onSetDocspaceInstance}
+            />
         );
     }
     ```
     Replace the following lines with your own data:
-    * **"http://example-onlyoffice.com/"** - replace with the URL of your server;
+    * **"http://example-onlyoffice.com"** - replace with the address of your ONLYOFFICE DocSpace, specified without a trailing slash;
 
     This JavaScript file will create the *App* component containing the ONLYOFFICE DocSpace configured with basic features.
 
@@ -117,22 +114,19 @@ Now you can deploy the application to the created server:
 ### Props
 | Name | Type | Default | Required | Description |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| `url` | string | null | yes | Address of ONLYOFFICE DocSpace. |
-| `config` | object | null | yes | Generic configuration object for opening a file with token. [Config API](https://api.onlyoffice.com/docspace/jssdk/config/) |
-| `email` | string | null | no | The user email to login in DocSpace. |
-| `onRequestPasswordHash` | (email: string) => string | null | no | The function called when the email parameter is passed, returning the passwordHash for login in DocSpace. |
-| `onUnsuccessLogin` | () => void | null | no | The function called when DocSpace account login failed. |
+| `config` | object | null | yes | Generic configuration object for opening a file with token. Requires `src` - the address of ONLYOFFICE DocSpace, specified without a trailing slash. [Config API](https://api.onlyoffice.com/docspace/jssdk/config/) |
 | `onSetDocspaceInstance` | (instance: SDKInstance) => void | null | no | The function called when DocSpace instance is obtained. The instance provides API methods for working with DocSpace. |
 
 ### Notes
 
+* The `config` prop is applied when the component is mounted. To change the configuration of the already opened DocSpace, use the `setConfig` method of the instance obtained via `onSetDocspaceInstance`, so that the frame is not recreated.
 * The component renders a wrapper element around the DocSpace frame. Its width and height are taken from `config.width` and `config.height` (*100%* by default), which keeps the percentage sizes of the frame working.
 
 ## Storybook
 
 Change the address of the DocSpace in the *.env* file:
 ```
-"DOCSPACE_URL": "https://example-onlyoffice.com/"
+DOCSPACE_URL=https://example-onlyoffice.com
 ```
 
 ### Build Storybook:

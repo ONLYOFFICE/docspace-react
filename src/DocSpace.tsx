@@ -19,54 +19,27 @@ import React, { useEffect } from "react";
 import cloneDeep from "lodash/cloneDeep";
 import SDK from "@onlyoffice/docspace-sdk-js";
 import { SDKInstance } from "@onlyoffice/docspace-sdk-js/dist/types/instance";
-import { TFrameConfig, TFrameEvents } from "@onlyoffice/docspace-sdk-js/dist/types/types";
-
-import { stripTrailingSlash } from "./utils";
+import { TFrameConfig } from "@onlyoffice/docspace-sdk-js/dist/types/types";
 
 type DocSpaceProps = {
-  url: string;
   config: TFrameConfig;
-  email?: string,
-  onRequestPasswordHash?: (email: string) => string,
-  onUnsuccessLogin?: () => void,
   onSetDocspaceInstance?: (instance: SDKInstance) => void;
 };
 
 const DocSpace: React.FC<DocSpaceProps> = ({
-  url,
   config,
-  email,
-  onRequestPasswordHash,
-  onUnsuccessLogin,
   onSetDocspaceInstance
 }) => {
-  const docspaceUrl = stripTrailingSlash(url);
   const internalConfig = cloneDeep(config);
-  const docspaceSDK = new SDK();
-
-  var docspaceInstance: SDKInstance;
 
   useEffect(() => {
     console.log(`[ONLYOFFICE DocSpace] Mount component: frameId[${config.frameId}]`);
 
-    internalConfig.src = docspaceUrl;
+    const docspaceSDK = new SDK();
+    const docspaceInstance = docspaceSDK.initFrame(internalConfig);
 
-    if (!email || !onRequestPasswordHash) {
-      openDocspace(internalConfig);
-    }
-
-    if (email && onRequestPasswordHash) {
-      const passwordHash = onRequestPasswordHash(email);
-
-      loginDocspace(email, passwordHash).then(() => {
-        openDocspace(internalConfig);
-      }).catch(() => {
-        if (onUnsuccessLogin) {
-          onUnsuccessLogin();
-        } else {
-          openDocspace(internalConfig);
-        }
-      });
+    if (onSetDocspaceInstance) {
+      onSetDocspaceInstance(docspaceInstance);
     }
 
     return () => {
@@ -77,57 +50,6 @@ const DocSpace: React.FC<DocSpaceProps> = ({
       }
     };
   }, []);
-
-  const openDocspace = (config: TFrameConfig) => {
-    docspaceInstance = docspaceSDK.initFrame(config);
-
-    if (onSetDocspaceInstance) {
-      onSetDocspaceInstance(docspaceInstance);
-    }
-  }
-
-  const loginDocspace = (email: string, passwordHash: string) => {
-    return new Promise((resolve, reject) => {
-      var loginDocspaceInstance: SDKInstance;
-
-      if (passwordHash == null || passwordHash.length <= 0) {
-        reject();
-      }
-
-      async function _login(e?: Event | object | string) {
-        const userInfo = await loginDocspaceInstance?.getUserInfo() as { email: string };
-
-        if (userInfo && userInfo.email === email) {
-          resolve(null);
-        } else {
-          loginDocspaceInstance?.login(email, passwordHash)
-            .then((response: any) => {
-              if (response.status && response.status !== 200) {
-                loginDocspaceInstance?.destroyFrame();
-                reject();
-                return;
-              }
-
-              resolve(null);
-            });
-        }
-      };
-
-      const systemConfig = {
-        src: docspaceUrl,
-        frameId: internalConfig.frameId,
-        width: internalConfig.width,
-        height: internalConfig.height,
-        theme: internalConfig.theme,
-        events: {
-          onAppReady: _login,
-          onAppError: internalConfig.events?.onAppError
-        } as TFrameEvents
-      } as TFrameConfig;
-
-      loginDocspaceInstance = docspaceSDK.initSystem(systemConfig)
-    })
-  }
 
   return (
     <div style={{ width: config.width || "100%", height: config.height || "100%" }}>
