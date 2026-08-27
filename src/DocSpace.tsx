@@ -129,7 +129,11 @@ const DocSpace: React.FC<DocSpaceProps> = ({
     })
   }
 
-  return <div id={config.frameId}></div>;
+  return (
+    <div style={{ width: config.width || "100%", height: config.height || "100%" }}>
+      <div id={config.frameId}></div>
+    </div>
+  );
 };
 
 export default DocSpace;

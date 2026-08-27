@@ -124,6 +124,10 @@ Now you can deploy the application to the created server:
 | `onUnsuccessLogin` | () => void | null | no | The function called when DocSpace account login failed. |
 | `onSetDocspaceInstance` | (instance: SDKInstance) => void | null | no | The function called when DocSpace instance is obtained. The instance provides API methods for working with DocSpace. |
 
+### Notes
+
+* The component renders a wrapper element around the DocSpace frame. Its width and height are taken from `config.width` and `config.height` (*100%* by default), which keeps the percentage sizes of the frame working.
+
 ## Storybook
 
 Change the address of the DocSpace in the *.env* file:
