@@ -1,0 +1,124 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    # Everything left out here cannot change the outcome of a run: docs, the
+    # license, the sample environment file and the workflows that do not build,
+    # lint or test the package.
+    paths-ignore: &ci-paths-ignore
+      - '**/*.md'
+      - 'LICENSE'
+      - '.env.example'
+      - '.gitignore'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/workflows/create-tag.yml'
+      - '.github/workflows/licenses.yml'
+      - '.github/workflows/release.yml'
+  pull_request:
+    paths-ignore: *ci-paths-ignore
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run ESLint
+        run: npm run lint
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+      - name: Install Dependencies
+        run: npm ci
+      # The solution covers src, stories, tests, the Storybook config and the
+      # Vite configs, so this is wider than what the build alone would check.
+      - name: Check Types
+        run: npx tsc -b --force
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Tests
+        run: npm run test:coverage
+      - name: Upload Coverage Report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage
+          path: coverage
+          retention-days: 7
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build Package
+        run: npm run build
+      - name: Verify Package Entry Points
+        run: |
+          for entry in dist/index.js dist/index.cjs dist/index.d.ts; do
+            if [ ! -s "$entry" ]; then
+              echo "::error::$entry is missing or empty"
+              exit 1
+            fi
+          done
+
+  storybook:
+    name: Build Storybook
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build Storybook
+        run: npm run build-storybook
