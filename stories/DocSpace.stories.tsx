@@ -62,6 +62,16 @@ const meta = {
   render: (args) => <DocSpaceWithUniqueFrameId {...args} />,
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      story: {
+        // The React renderer renders docs stories inline, next to the rest of the
+        // page, where nothing gives the story a height of its own, so a frame
+        // asking for `height: 100%` collapses to the default iframe height. An
+        // iframe of its own gives the frame a viewport it can fill.
+        inline: false,
+        iframeHeight: '600px',
+      },
+    },
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof DocSpace>;
