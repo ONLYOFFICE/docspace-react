@@ -16,7 +16,6 @@
 
 import React, { useEffect } from "react";
 
-import cloneDeep from "lodash/cloneDeep";
 import SDK from "@onlyoffice/docspace-sdk-js";
 import { SDKInstance } from "@onlyoffice/docspace-sdk-js/dist/types/instance";
 import { TFrameConfig } from "@onlyoffice/docspace-sdk-js/dist/types/types";
@@ -30,7 +29,7 @@ const DocSpace: React.FC<DocSpaceProps> = ({
   config,
   onSetDocspaceInstance
 }) => {
-  const internalConfig = cloneDeep(config);
+  const internalConfig = { ...config };
 
   useEffect(() => {
     console.log(`[ONLYOFFICE DocSpace] Mount component: frameId[${config.frameId}]`);

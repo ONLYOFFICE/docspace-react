@@ -22,9 +22,6 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
-  "dependencies": {
-    "lodash": "4.17.21"
-  },
   "devDependencies": {
     "@babel/core": "^7.26.9",
     "@babel/preset-env": "^7.26.9",
@@ -47,7 +44,6 @@
     "@storybook/test": "^8.5.6",
     "@testing-library/react": "^16.2.0",
     "@types/jest": "^29.5.14",
-    "@types/lodash": "^4.17.15",
     "@types/react": "^19.0.10",
     "babel-jest": "^29.7.0",
     "babel-loader": "^9.2.1",
