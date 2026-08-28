@@ -16,65 +16,64 @@
   "maintainers": [
     "Ascensio System SIA <integration@onlyoffice.com> (https://www.onlyoffice.com)"
   ],
+  "keywords": [
+    "onlyoffice"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "src"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
-    "rollup": "rollup -c --bundleConfigAsCjs",
-    "test": "jest",
+    "build": "tsc -b && vite build && tsc -p tsconfig.build.json",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.26.9",
-    "@babel/preset-env": "^7.26.9",
-    "@babel/preset-react": "^7.26.3",
-    "@babel/preset-typescript": "^7.26.0",
-    "@chromatic-com/storybook": "^3.2.4",
-    "@onlyoffice/docspace-sdk-js": "^2.0.0",
-    "@rollup/plugin-commonjs": "^28.0.2",
-    "@rollup/plugin-node-resolve": "^16.0.0",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^11.1.6",
-    "@storybook/addon-essentials": "^8.5.6",
-    "@storybook/addon-interactions": "^8.5.6",
-    "@storybook/addon-links": "^8.5.6",
-    "@storybook/addon-onboarding": "^8.5.6",
-    "@storybook/addon-webpack5-compiler-swc": "^2.1.0",
-    "@storybook/blocks": "^8.5.6",
-    "@storybook/react": "^8.5.6",
-    "@storybook/react-webpack5": "^8.5.6",
-    "@storybook/test": "^8.5.6",
-    "@testing-library/react": "^16.2.0",
-    "@types/jest": "^29.5.14",
-    "@types/react": "^19.0.10",
-    "babel-jest": "^29.7.0",
-    "babel-loader": "^9.2.1",
-    "jest-environment-jsdom": "^29.7.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "rollup": "^4.34.8",
-    "rollup-plugin-dts": "^6.1.1",
-    "rollup-plugin-filesize": "^10.0.0",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "storybook": "^8.5.6",
-    "ts-jest": "^29.2.5",
-    "tslib": "^2.8.1",
-    "typescript": "^5.7.3"
-  },
-  "overrides": {
-    "esbuild": "0.25.0"
+    "build-storybook": "storybook build",
+    "prepack": "npm run build"
   },
   "peerDependencies": {
     "@onlyoffice/docspace-sdk-js": "^2.0.0",
-    "react": "^16.9.0 || ^17 || ^18 || ^19",
-    "react-dom": "^16.9.0 || ^17 || ^18 || ^19"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "universal": "dist/umd/index.js",
-  "files": [
-    "dist"
-  ],
-  "types": "dist/index.d.ts",
-  "keywords": [
-    "onlyoffice"
-  ]
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@onlyoffice/docspace-sdk-js": "^2.0.0",
+    "@storybook/addon-docs": "^10.5.10",
+    "@storybook/react-vite": "^10.5.10",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "@vitejs/plugin-react": "^6.1.0",
+    "@vitest/coverage-v8": "^4.1.11",
+    "eslint": "^10.9.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.11.0",
+    "jsdom": "^30.0.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "storybook": "^10.5.10",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.67.0",
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
+  }
 }

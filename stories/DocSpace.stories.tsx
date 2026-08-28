@@ -14,12 +14,14 @@
 * limitations under the License.
 */
 
-import type { Meta, StoryObj } from '@storybook/react';
-import DocSpace from '../DocSpace';
-import { TFrameConfig } from "@onlyoffice/docspace-sdk-js/dist/types/types";
+import { useState } from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { TFrameConfig } from '@onlyoffice/docspace-sdk-js/dist/types/types';
+
+import { DocSpace, type DocSpaceProps } from '../src';
 import './stories.css';
 
-const onAppReady = (e?: Event | object | string) => {
+const onAppReady = () => {
   console.log("ONLYOFFICE DocSpace App is ready!");
 }
 
@@ -28,7 +30,7 @@ const onAppError = (e?: Event | object | string) => {
 }
 
 const defaultConfig: TFrameConfig = {
-  src: process.env.DOCSPACE_URL as string,
+  src: import.meta.env.VITE_DOCSPACE_URL as string,
   frameId: "onlyoffice-docspace",
   mode: "manager",
   width: "100%",
@@ -39,9 +41,25 @@ const defaultConfig: TFrameConfig = {
   }
 };
 
+let frameSeq = 0;
+
+/**
+ * The SDK keys every frame it opens by `frameId`, so two live frames must never
+ * share one. Storybook remounts a story on hot reload and when it is navigated
+ * back to, which can overlap the new frame with the one being torn down, so the
+ * story id alone is not enough. Each mount takes the next suffix, and useState
+ * holds on to it for the life of that mount so re-renders keep the same id.
+ */
+function DocSpaceWithUniqueFrameId({ config, ...props }: DocSpaceProps) {
+  const [frameId] = useState(() => `${config.frameId}-${++frameSeq}`);
+
+  return <DocSpace {...props} config={{ ...config, frameId }} />;
+}
+
 const meta = {
   title: 'Example/DocSpace',
   component: DocSpace,
+  render: (args) => <DocSpaceWithUniqueFrameId {...args} />,
   parameters: {
     layout: 'fullscreen',
   },
@@ -66,7 +84,7 @@ export const Editor: Story = {
       ...defaultConfig,
       frameId: "onlyoffice-docspace-editor",
       mode: "editor",
-      id: process.env.DOCSPACE_FILE_ID as string
+      id: import.meta.env.VITE_DOCSPACE_FILE_ID as string
     }
   }
 };

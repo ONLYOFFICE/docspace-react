@@ -14,5 +14,8 @@
 * limitations under the License.
 */
 
-export { DocSpace } from './components/DocSpace'
-export type { DocSpaceProps } from './components/DocSpace'
+import '@testing-library/jest-dom/vitest'
+import { cleanup } from '@testing-library/react'
+import { afterEach } from 'vitest'
+
+afterEach(cleanup)

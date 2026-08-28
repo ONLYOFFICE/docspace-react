@@ -8,6 +8,8 @@ This repo contains the ONLYOFFICE Docspace React component which integrates [ONL
 
 This procedure requires [Node.js (and npm)](https://nodejs.org/en).
 
+The component is built for React 19 and requires *react*, *react-dom* and *@onlyoffice/docspace-sdk-js* 2.x as peer dependencies.
+
 ## Creating the demo React application with ONLYOFFICE DocSpace
 
 This procedure creates a [basic React application](https://github.com/facebook/create-react-app) and installs an ONLYOFFICE Docs editor in it.
@@ -126,10 +128,12 @@ Now you can deploy the application to the created server:
 
 ## Storybook
 
-Change the address of the DocSpace in the *.env* file:
+Copy *.env.example* to *.env* and set the DocSpace the stories point at:
 ```
-DOCSPACE_URL=https://example-onlyoffice.com
+VITE_DOCSPACE_URL=https://example-onlyoffice.com
+VITE_DOCSPACE_FILE_ID=100000
 ```
+Only the *VITE_*-prefixed variables reach the browser. *VITE_DOCSPACE_FILE_ID* is the file the *Editor* story opens, it can be any file id from the portal above.
 
 ### Build Storybook:
 ```
@@ -150,14 +154,20 @@ git clone https://github.com/ONLYOFFICE/docspace-react
 ```
 npm install
 ```
+### Lint the sources:
+```
+npm run lint
+```
 ### Test the component:
 ```
 npm run test
 ```
+The tests can also be run in watch mode with `npm run test:watch`, and with a coverage report with `npm run test:coverage`.
 ### Build the project:
 ```
-npm run rollup
+npm run build
 ```
+The *dist* directory will be created with the ESM and CommonJS bundles and the type declarations.
 ### Create the package:
 ```
 npm pack

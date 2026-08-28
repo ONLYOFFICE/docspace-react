@@ -24,8 +24,6 @@ jobs:
           package-manager-cache: false
       - name: Install dependencies
         run: npm ci
-      - name: Build project
-        run: npm run rollup
       - name: Publish to npm
         run: npm publish --provenance --access public
       - name: Get Info
