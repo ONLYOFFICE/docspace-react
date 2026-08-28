@@ -4,21 +4,32 @@ on:
   workflow_dispatch:
   push:
     branches: [master, develop]
+    paths: &license-paths
+      - 'package.json'
+      - 'package-lock.json'
+      - '.check-licenses.yml'
+      - 'doc/dependency_decisions.yml'
+      - '.github/workflows/licenses.yml'
   pull_request:
     branches: [master, develop]
+    paths: *license-paths
+
+permissions:
+  contents: read
 
 jobs:
-  licences:
+  licenses:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: 18
+          node-version-file: '.nvmrc'
+          cache: npm
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
       - name: Get Repository License
         id: license
         run: |
