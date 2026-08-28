@@ -14,5 +14,5 @@
 * limitations under the License.
 */
 
-export { DocSpace } from './components/DocSpace'
-export type { DocSpaceProps } from './components/DocSpace'
+export { DocSpace } from "./components/DocSpace";
+export type { DocSpaceProps } from "./components/DocSpace";

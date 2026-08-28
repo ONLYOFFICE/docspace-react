@@ -14,20 +14,20 @@
 * limitations under the License.
 */
 
-import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { TFrameConfig } from '@onlyoffice/docspace-sdk-js/dist/types/types';
+import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { TFrameConfig } from "@onlyoffice/docspace-sdk-js/dist/types/types";
 
-import { DocSpace, type DocSpaceProps } from '../src';
-import './stories.css';
+import { DocSpace, type DocSpaceProps } from "../src";
+import "./stories.css";
 
 const onAppReady = () => {
   console.log("ONLYOFFICE DocSpace App is ready!");
-}
+};
 
 const onAppError = (e?: Event | object | string) => {
   alert(e);
-}
+};
 
 const defaultConfig: TFrameConfig = {
   src: import.meta.env.VITE_DOCSPACE_URL as string,
@@ -57,11 +57,11 @@ function DocSpaceWithUniqueFrameId({ config, ...props }: DocSpaceProps) {
 }
 
 const meta = {
-  title: 'Example/DocSpace',
+  title: "Example/DocSpace",
   component: DocSpace,
   render: (args) => <DocSpaceWithUniqueFrameId {...args} />,
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
     docs: {
       story: {
         // The React renderer renders docs stories inline, next to the rest of the
@@ -69,11 +69,11 @@ const meta = {
         // asking for `height: 100%` collapses to the default iframe height. An
         // iframe of its own gives the frame a viewport it can fill.
         inline: false,
-        iframeHeight: '600px',
+        iframeHeight: "600px",
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 } satisfies Meta<typeof DocSpace>;
 
 export default meta;

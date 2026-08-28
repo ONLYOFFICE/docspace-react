@@ -17,8 +17,8 @@
 import { useEffect } from "react";
 
 import SDK from "@onlyoffice/docspace-sdk-js";
-import type { SDKInstance } from '@onlyoffice/docspace-sdk-js/dist/types/instance'
-import type { TFrameConfig } from '@onlyoffice/docspace-sdk-js/dist/types/types'
+import type { SDKInstance } from "@onlyoffice/docspace-sdk-js/dist/types/instance";
+import type { TFrameConfig } from "@onlyoffice/docspace-sdk-js/dist/types/types";
 
 export type DocSpaceProps = {
   config: TFrameConfig;
@@ -27,18 +27,18 @@ export type DocSpaceProps = {
 
 export function DocSpace({ config, onSetDocspaceInstance }: DocSpaceProps) {
   useEffect(() => {
-    const docspaceInstance = new SDK().initFrame(config)
-    onSetDocspaceInstance?.(docspaceInstance)
+    const docspaceInstance = new SDK().initFrame(config);
+    onSetDocspaceInstance?.(docspaceInstance);
 
     return () => {
-      docspaceInstance?.destroyFrame()
-    }
+      docspaceInstance?.destroyFrame();
+    };
     // Mount only: re-running this would destroy the frame and build a new one,
     // dropping whatever the user was doing in it. To change the configuration of
     // an open DocSpace, use the instance's setConfig method, which is handed out
     // through onSetDocspaceInstance.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   return (
     // lineHeight: 0 is inherited by the container the SDK puts the frame in. The
@@ -46,8 +46,8 @@ export function DocSpace({ config, onSetDocspaceInstance }: DocSpaceProps) {
     // the line box adds the font's descender space (about 4px) under it. With a
     // frame asking for the full height of its box, those few pixels are enough
     // to overflow the wrapper and give the page a scrollbar.
-    <div style={{ width: config.width ?? '100%', height: config.height ?? '100%', lineHeight: 0 }}>
+    <div style={{ width: config.width ?? "100%", height: config.height ?? "100%", lineHeight: 0 }}>
       <div id={config.frameId}></div>
     </div>
-  )
+  );
 }

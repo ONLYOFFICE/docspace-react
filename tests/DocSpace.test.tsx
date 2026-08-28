@@ -14,95 +14,95 @@
 * limitations under the License.
 */
 
-import { render } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { render } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { SDKInstance } from '@onlyoffice/docspace-sdk-js/dist/types/instance'
-import type { TFrameConfig } from '@onlyoffice/docspace-sdk-js/dist/types/types'
+import type { SDKInstance } from "@onlyoffice/docspace-sdk-js/dist/types/instance";
+import type { TFrameConfig } from "@onlyoffice/docspace-sdk-js/dist/types/types";
 
-import { DocSpace } from '../src'
+import { DocSpace } from "../src";
 
 const { initFrame, destroyFrame } = vi.hoisted(() => ({
   initFrame: vi.fn(),
   destroyFrame: vi.fn(),
-}))
+}));
 
-vi.mock('@onlyoffice/docspace-sdk-js', () => ({
+vi.mock("@onlyoffice/docspace-sdk-js", () => ({
   default: class SDK {
-    initFrame = initFrame
+    initFrame = initFrame;
   },
-}))
+}));
 
-const instance = { destroyFrame } as unknown as SDKInstance
+const instance = { destroyFrame } as unknown as SDKInstance;
 
 const config: TFrameConfig = {
-  frameId: 'ds-frame',
-  src: 'https://portal.example.com',
-  mode: 'manager',
-}
+  frameId: "ds-frame",
+  src: "https://portal.example.com",
+  mode: "manager",
+};
 
 beforeEach(() => {
-  vi.clearAllMocks()
-  initFrame.mockReturnValue(instance)
-})
+  vi.clearAllMocks();
+  initFrame.mockReturnValue(instance);
+});
 
-describe('DocSpace', () => {
-  it('renders the element the SDK mounts the frame into', () => {
-    render(<DocSpace config={config} />)
+describe("DocSpace", () => {
+  it("renders the element the SDK mounts the frame into", () => {
+    render(<DocSpace config={config} />);
 
-    expect(document.getElementById('ds-frame')).toBeInTheDocument()
-  })
+    expect(document.getElementById("ds-frame")).toBeInTheDocument();
+  });
 
-  it('sizes the wrapper from the config', () => {
+  it("sizes the wrapper from the config", () => {
     const { container } = render(
-      <DocSpace config={{ ...config, width: '480px', height: '600px' }} />,
-    )
+      <DocSpace config={{ ...config, width: "480px", height: "600px" }} />,
+    );
 
-    expect(container.firstChild).toHaveStyle({ width: '480px', height: '600px' })
-  })
+    expect(container.firstChild).toHaveStyle({ width: "480px", height: "600px" });
+  });
 
-  it('falls back to filling its parent when no size is given', () => {
-    const { container } = render(<DocSpace config={config} />)
+  it("falls back to filling its parent when no size is given", () => {
+    const { container } = render(<DocSpace config={config} />);
 
-    expect(container.firstChild).toHaveStyle({ width: '100%', height: '100%' })
-  })
+    expect(container.firstChild).toHaveStyle({ width: "100%", height: "100%" });
+  });
 
-  it('initialises the frame once, with the given config', () => {
-    render(<DocSpace config={config} />)
+  it("initialises the frame once, with the given config", () => {
+    render(<DocSpace config={config} />);
 
-    expect(initFrame).toHaveBeenCalledTimes(1)
-    expect(initFrame).toHaveBeenCalledWith(config)
-  })
+    expect(initFrame).toHaveBeenCalledTimes(1);
+    expect(initFrame).toHaveBeenCalledWith(config);
+  });
 
-  it('hands the instance to onSetDocspaceInstance', () => {
-    const onSetDocspaceInstance = vi.fn()
+  it("hands the instance to onSetDocspaceInstance", () => {
+    const onSetDocspaceInstance = vi.fn();
 
     render(
       <DocSpace config={config} onSetDocspaceInstance={onSetDocspaceInstance} />,
-    )
+    );
 
-    expect(onSetDocspaceInstance).toHaveBeenCalledExactlyOnceWith(instance)
-  })
+    expect(onSetDocspaceInstance).toHaveBeenCalledExactlyOnceWith(instance);
+  });
 
-  it('renders without a callback', () => {
-    expect(() => render(<DocSpace config={config} />)).not.toThrow()
-    expect(initFrame).toHaveBeenCalledTimes(1)
-  })
+  it("renders without a callback", () => {
+    expect(() => render(<DocSpace config={config} />)).not.toThrow();
+    expect(initFrame).toHaveBeenCalledTimes(1);
+  });
 
-  it('does not re-initialise when the config changes', () => {
-    const { rerender } = render(<DocSpace config={config} />)
+  it("does not re-initialise when the config changes", () => {
+    const { rerender } = render(<DocSpace config={config} />);
 
-    rerender(<DocSpace config={{ ...config, src: 'https://other.example.com' }} />)
+    rerender(<DocSpace config={{ ...config, src: "https://other.example.com" }} />);
 
-    expect(initFrame).toHaveBeenCalledTimes(1)
-    expect(destroyFrame).not.toHaveBeenCalled()
-  })
+    expect(initFrame).toHaveBeenCalledTimes(1);
+    expect(destroyFrame).not.toHaveBeenCalled();
+  });
 
-  it('destroys the frame on unmount', () => {
-    const { unmount } = render(<DocSpace config={config} />)
+  it("destroys the frame on unmount", () => {
+    const { unmount } = render(<DocSpace config={config} />);
 
-    unmount()
+    unmount();
 
-    expect(destroyFrame).toHaveBeenCalledTimes(1)
-  })
-})
+    expect(destroyFrame).toHaveBeenCalledTimes(1);
+  });
+});

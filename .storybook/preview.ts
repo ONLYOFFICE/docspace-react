@@ -1,10 +1,10 @@
-import type { Preview } from '@storybook/react-vite'
+import type { Preview } from "@storybook/react-vite";
 
 const preview: Preview = {
   parameters: {
     controls: { expanded: true },
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
-}
+};
 
-export default preview
+export default preview;
