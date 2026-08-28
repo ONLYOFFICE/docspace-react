@@ -32,8 +32,6 @@ const DocSpace: React.FC<DocSpaceProps> = ({
   const internalConfig = { ...config };
 
   useEffect(() => {
-    console.log(`[ONLYOFFICE DocSpace] Mount component: frameId[${config.frameId}]`);
-
     const docspaceSDK = new SDK();
     const docspaceInstance = docspaceSDK.initFrame(internalConfig);
 
@@ -42,9 +40,7 @@ const DocSpace: React.FC<DocSpaceProps> = ({
     }
 
     return () => {
-      console.log(`[ONLYOFFICE DocSpace] Unmount component: frameId[${internalConfig.frameId}]`);
       if (docspaceInstance) {
-        console.log(`Destroy DocSpace: frameId[${internalConfig.frameId}]`);
         docspaceInstance.destroyFrame();
       }
     };
