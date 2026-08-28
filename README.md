@@ -24,8 +24,10 @@ This procedure creates a [basic React application](https://github.com/facebook/c
 
 3. Install ONLYOFFICE DocSpace React component from **npm** and save it to the *package.json* file with *--save*:
     ```
-    npm install --save @onlyoffice/docspace-react
+    npm install --save @onlyoffice/docspace-react @onlyoffice/docspace-sdk-js
     ```
+
+    *@onlyoffice/docspace-sdk-js* is a peer dependency of the component. npm 7 and later installs it automatically, other package managers may require the explicit installation shown above.
 
 4. Open the *./src/App.js* file in the *docspace-react-demo* project and replace its contents with the following code:
 
