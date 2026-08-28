@@ -41,7 +41,12 @@ export function DocSpace({ config, onSetDocspaceInstance }: DocSpaceProps) {
   }, [])
 
   return (
-    <div style={{ width: config.width ?? '100%', height: config.height ?? '100%' }}>
+    // lineHeight: 0 is inherited by the container the SDK puts the frame in. The
+    // frame is an iframe, an inline element, so it sits on a text baseline and
+    // the line box adds the font's descender space (about 4px) under it. With a
+    // frame asking for the full height of its box, those few pixels are enough
+    // to overflow the wrapper and give the page a scrollbar.
+    <div style={{ width: config.width ?? '100%', height: config.height ?? '100%', lineHeight: 0 }}>
       <div id={config.frameId}></div>
     </div>
   )
