@@ -53,18 +53,24 @@ describe("DocSpace", () => {
     expect(document.getElementById("ds-frame")).toBeInTheDocument();
   });
 
-  it("sizes the wrapper from the config", () => {
+  it("renders the placeholder inside a wrapper that creates no box", () => {
     const { container } = render(
       <DocSpace config={{ ...config, width: "480px", height: "600px" }} />,
     );
 
-    expect(container.firstChild).toHaveStyle({ width: "480px", height: "600px" });
+    const wrapper = container.firstElementChild as HTMLElement;
+
+    expect(wrapper.id).toBe("");
+    expect(wrapper.firstElementChild?.id).toBe("ds-frame");
+    expect(wrapper.style.display).toBe("contents");
+    expect(wrapper.style.width).toBe("");
+    expect(wrapper.style.height).toBe("");
   });
 
-  it("falls back to filling its parent when no size is given", () => {
+  it("passes line-height 0 down to the frame container", () => {
     const { container } = render(<DocSpace config={config} />);
 
-    expect(container.firstChild).toHaveStyle({ width: "100%", height: "100%" });
+    expect(container.firstChild).toHaveStyle({ lineHeight: "0" });
   });
 
   it("initialises the frame once, with the given config", () => {

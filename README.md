@@ -124,7 +124,7 @@ Now you can deploy the application to the created server:
 ### Notes
 
 * The `config` prop is applied when the component is mounted. To change the configuration of the already opened DocSpace, use the `setConfig` method of the instance obtained via `onSetDocspaceInstance`, so that the frame is not recreated.
-* The component renders a wrapper element around the DocSpace frame. Its width and height are taken from `config.width` and `config.height` (*100%* by default), which keeps the percentage sizes of the frame working.
+* The component renders the DocSpace frame placeholder inside a wrapper element. DocSpace replaces the placeholder with its own container, so the wrapper is what keeps the component removable by React. The wrapper is styled with `display: contents` and creates no box of its own, so the frame is sized by `config.width` and `config.height` (*100%* by default) against the element you place the component in.
 
 ## Storybook
 

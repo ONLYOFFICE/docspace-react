@@ -4,7 +4,7 @@
 - deleted props url, email, onRequestPasswordHash, onUnsuccessLogin
 - deleted the DocSpace login procedure, use the login method of the instance from onSetDocspaceInstance
 - the src prop of the config is required, specify the DocSpace address without a trailing slash
-- added a wrapper element around the frame, its sizes are taken from config.width and config.height
+- the frame placeholder is rendered inside a wrapper element, which is kept out of layout with display: contents, so the frame is sized by config.width and config.height against the element the component is placed in
 - @onlyoffice/docspace-sdk-js moved to peer dependencies, install it alongside the component
 - removed the lodash runtime dependency, the component no longer has production dependencies
 - removed the component lifecycle logging from the browser console
