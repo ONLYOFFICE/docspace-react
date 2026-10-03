@@ -8,7 +8,7 @@ This repo contains the ONLYOFFICE Docspace React component which integrates [ONL
 
 This procedure requires [Node.js (and npm)](https://nodejs.org/en).
 
-The component is built for React 19 and requires *react*, *react-dom* and *@onlyoffice/docspace-sdk-js* 2.x as peer dependencies.
+The component supports React 18 and 19 and requires *react*, *react-dom* and *@onlyoffice/docspace-sdk-js* 2.x as peer dependencies.
 
 ## Creating the demo React application with ONLYOFFICE DocSpace
 
