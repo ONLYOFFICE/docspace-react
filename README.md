@@ -8,6 +8,8 @@ This repo contains the ONLYOFFICE Docspace React component which integrates [ONL
 
 This procedure requires [Node.js (and npm)](https://nodejs.org/en).
 
+The component supports React 18 and 19 and requires *react*, *react-dom* and *@onlyoffice/docspace-sdk-js* 2.x as peer dependencies.
+
 ## Creating the demo React application with ONLYOFFICE DocSpace
 
 This procedure creates a [basic React application](https://github.com/facebook/create-react-app) and installs an ONLYOFFICE Docs editor in it.
@@ -24,51 +26,50 @@ This procedure creates a [basic React application](https://github.com/facebook/c
 
 3. Install ONLYOFFICE DocSpace React component from **npm** and save it to the *package.json* file with *--save*:
     ```
-    npm install --save @onlyoffice/docspace-react
+    npm install --save @onlyoffice/docspace-react @onlyoffice/docspace-sdk-js
     ```
+
+    *@onlyoffice/docspace-sdk-js* is a peer dependency of the component. npm 7 and later installs it automatically, other package managers may require the explicit installation shown above.
 
 4. Open the *./src/App.js* file in the *docspace-react-demo* project and replace its contents with the following code:
 
     ```
-    import React, { useRef } from 'react';
+    import React from 'react';
     import { DocSpace } from "@onlyoffice/docspace-react";
-    import SDKInstance from "@onlyoffice/docspace-sdk-js/dist/types/instance";
 
     const onAppReady = function (e) {
         console.log("ONLYOFFICE DocSpace App is ready!");
     };
 
     const onAppError = (e) => {
-    console.log(e);
-    }
+        console.log(e);
+    };
 
-    const onSetDocspaceInstance = function (instance: SDKInstance) {
+    const onSetDocspaceInstance = function (instance) {
         console.log(instance);
     };
 
     export default function App() {
         return (
-            <pre>
-                <DocSpace
-                    url="http://example-onlyoffice.com/"
-                    config={{
-                        "frameId": "onlyoffice-docspace"
-                        "mode": "manager",
-                        "width": "100%",
-                        "height": "100%",
-                        "events": {
-                            "onAppReady": "onAppReady",
-                            "onAppError": "onAppError",
-                        }
-                    }}
-                    onSetDocspaceInstance={onSetDocspaceInstance}
-                />
-            </>
+            <DocSpace
+                config={{
+                    "src": "http://example-onlyoffice.com",
+                    "frameId": "onlyoffice-docspace",
+                    "mode": "manager",
+                    "width": "100%",
+                    "height": "100%",
+                    "events": {
+                        "onAppReady": onAppReady,
+                        "onAppError": onAppError
+                    }
+                }}
+                onSetDocspaceInstance={onSetDocspaceInstance}
+            />
         );
     }
     ```
     Replace the following lines with your own data:
-    * **"http://example-onlyoffice.com/"** - replace with the URL of your server;
+    * **"http://example-onlyoffice.com"** - replace with the address of your ONLYOFFICE DocSpace, specified without a trailing slash;
 
     This JavaScript file will create the *App* component containing the ONLYOFFICE DocSpace configured with basic features.
 
@@ -117,19 +118,22 @@ Now you can deploy the application to the created server:
 ### Props
 | Name | Type | Default | Required | Description |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| `url` | string | null | yes | Address of ONLYOFFICE DocSpace. |
-| `config` | object | null | yes | Generic configuration object for opening a file with token. [Config API](https://api.onlyoffice.com/docspace/jssdk/config/) |
-| `email` | string | null | no | The user email to login in DocSpace. |
-| `onRequestPasswordHash` | (email: string) => string | null | no | The function called when the email parameter is passed, returning the passwordHash for login in DocSpace. |
-| `onUnsuccessLogin` | () => void | null | no | The function called when DocSpace account login failed. |
+| `config` | object | null | yes | Generic configuration object for opening a file with token. Requires `src` - the address of ONLYOFFICE DocSpace, specified without a trailing slash. [Config API](https://api.onlyoffice.com/docspace/jssdk/config/) |
 | `onSetDocspaceInstance` | (instance: SDKInstance) => void | null | no | The function called when DocSpace instance is obtained. The instance provides API methods for working with DocSpace. |
+
+### Notes
+
+* The `config` prop is applied when the component is mounted. To change the configuration of the already opened DocSpace, use the `setConfig` method of the instance obtained via `onSetDocspaceInstance`, so that the frame is not recreated.
+* The component renders the DocSpace frame placeholder inside a wrapper element. DocSpace replaces the placeholder with its own container, so the wrapper is what keeps the component removable by React. The wrapper is styled with `display: contents` and creates no box of its own, so the frame is sized by `config.width` and `config.height` (*100%* by default) against the element you place the component in.
 
 ## Storybook
 
-Change the address of the DocSpace in the *.env* file:
+Copy *.env.example* to *.env* and set the DocSpace the stories point at:
 ```
-"DOCSPACE_URL": "https://example-onlyoffice.com/"
+VITE_DOCSPACE_URL=https://example-onlyoffice.com
+VITE_DOCSPACE_FILE_ID=100000
 ```
+Only the *VITE_*-prefixed variables reach the browser. *VITE_DOCSPACE_FILE_ID* is the file the *Editor* story opens, it can be any file id from the portal above.
 
 ### Build Storybook:
 ```
@@ -150,14 +154,20 @@ git clone https://github.com/ONLYOFFICE/docspace-react
 ```
 npm install
 ```
+### Lint the sources:
+```
+npm run lint
+```
 ### Test the component:
 ```
 npm run test
 ```
+The tests can also be run in watch mode with `npm run test:watch`, and with a coverage report with `npm run test:coverage`.
 ### Build the project:
 ```
-npm run rollup
+npm run build
 ```
+The *dist* directory will be created with the ESM and CommonJS bundles and the type declarations.
 ### Create the package:
 ```
 npm pack

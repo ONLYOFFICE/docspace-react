@@ -14,24 +14,5 @@
 * limitations under the License.
 */
 
-import React from "react";
-import { render } from "@testing-library/react";
-
-import DocSpace from "../DocSpace";
-import { TFrameConfig } from "../types";
-
-describe("DocSpace", () => {
-  test("renders the DocumentEditor component", () => {
-    render(
-      <DocSpace
-        url="https://example-onlyoffice.com/"
-        config={{
-          frameId: "onlyoffice-docspace",
-          mode: "manager",
-          width: "100%",
-          height: "100%",
-        } as TFrameConfig}
-      />
-    );
-  });
-});
+export { DocSpace } from "./DocSpace";
+export type { DocSpaceProps } from "./DocSpace";

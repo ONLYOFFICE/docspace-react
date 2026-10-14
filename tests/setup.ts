@@ -14,11 +14,8 @@
 * limitations under the License.
 */
 
+import "@testing-library/jest-dom/vitest";
+import { cleanup } from "@testing-library/react";
+import { afterEach } from "vitest";
 
-export const stripTrailingSlash = (url: string) => {
-  if (url.endsWith("/")) {
-    return url.slice(0, -1);
-  }
-
-  return url;
-}
+afterEach(cleanup);
