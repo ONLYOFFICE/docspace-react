@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`@onlyoffice/docspace-react` — a single React component (`DocSpace`) that embeds an ONLYOFFICE DocSpace frame via `@onlyoffice/docspace-sdk-js`. Published to npm as a library (ESM + CJS + `.d.ts`); there is no app here, only Storybook stories for manual checking.
+`@onlyoffice/docspace-react` — a single React component (`DocSpace`) that embeds an ONLYOFFICE Apps (formerly DocSpace) frame via `@onlyoffice/docspace-sdk-js`. Published to npm as a library (ESM + CJS + `.d.ts`); there is no app here, only Storybook stories for manual checking.
 
 ## Commands
 
@@ -25,7 +25,7 @@ CI (`.github/workflows/ci.yml`) runs typecheck and tests against **both React 18
 - The SDK *replaces* the `#frameId` placeholder with its own container, so the outer wrapper `div` is what React owns. The wrapper uses `display: contents` (no box, so sizing comes from `config.width`/`height` against the parent) and `lineHeight: 0` (prevents the inline iframe's descender gap from causing a scrollbar). Tests assert these styles.
 - `react`, `react-dom` and `@onlyoffice/docspace-sdk-js` are **peer dependencies** and are marked external in `vite.config.ts` — never bundle them, and the package has no runtime `dependencies`. SDK types are imported from deep paths (`@onlyoffice/docspace-sdk-js/dist/types/...`).
 - Three separate build configs: `vite.config.ts` (library build), `vitest.config.ts` (tests — kept separate so the externals/lib settings don't apply), and `.storybook/main.ts` (strips `build.lib`/`rollupOptions` in `viteFinal`).
-- Tests mock the SDK module with `vi.mock` + `vi.hoisted` spies for `initFrame`/`destroyFrame`; no real DocSpace is contacted.
+- Tests mock the SDK module with `vi.mock` + `vi.hoisted` spies for `initFrame`/`destroyFrame`; no real ONLYOFFICE Apps instance is contacted.
 - Stories give every mount a unique `frameId` because the SDK keys frames by id and Storybook remounts can overlap old and new frames.
 - Public exports go through `src/index.ts` → `src/components/DocSpace/index.ts`.
 

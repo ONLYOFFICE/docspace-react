@@ -9,6 +9,8 @@
 - removed the lodash runtime dependency, the component no longer has production dependencies
 - removed the component lifecycle logging from the browser console
 - added support for React 18, react and react-dom ^18.0.0 || ^19.0.0 are accepted as peer dependencies
+- renamed the product from ONLYOFFICE DocSpace to ONLYOFFICE Apps in the documentation, comments and package metadata, the package name, the DocSpace component, the onSetDocspaceInstance prop and the VITE_DOCSPACE_* variables remain unchanged, so existing code continues to work
+- added the docspace and onlyoffice-apps keywords to the package metadata
 
 ## 2.1.0
 - @onlyoffice/docspace-sdk-js:2.0.0

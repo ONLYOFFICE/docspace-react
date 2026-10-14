@@ -1,7 +1,7 @@
 {
   "name": "@onlyoffice/docspace-react",
   "version": "2.1.0",
-  "description": "React component for ONLYOFFICE DocSpace",
+  "description": "React component for ONLYOFFICE Apps",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/ONLYOFFICE/docspace-react/issues",
@@ -17,7 +17,9 @@
     "Ascensio System SIA <integration@onlyoffice.com> (https://www.onlyoffice.com)"
   ],
   "keywords": [
-    "onlyoffice"
+    "onlyoffice",
+    "docspace",
+    "onlyoffice-apps"
   ],
   "type": "module",
   "sideEffects": false,

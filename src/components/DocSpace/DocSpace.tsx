@@ -35,7 +35,7 @@ export function DocSpace({ config, onSetDocspaceInstance }: DocSpaceProps) {
     };
     // Mount only: re-running this would destroy the frame and build a new one,
     // dropping whatever the user was doing in it. To change the configuration of
-    // an open DocSpace, use the instance's setConfig method, which is handed out
+    // an open ONLYOFFICE Apps frame, use the instance's setConfig method, which is handed out
     // through onSetDocspaceInstance.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
