@@ -1,8 +1,8 @@
 # @onlyoffice/docspace-react
 
-This repo contains the ONLYOFFICE Docspace React component which integrates [ONLYOFFICE DocSpace](https://github.com/ONLYOFFICE/DocSpace) into [React](https://react.dev/) projects.
+This repo contains the ONLYOFFICE Apps React component which integrates [ONLYOFFICE Apps](https://github.com/ONLYOFFICE/DocSpace) into [React](https://react.dev/) projects.
 
-**Please note**: To work with this component, you need to have ONLYOFFICE DocSpace. If you are new to DocSpace, [create an account](https://www.onlyoffice.com/docspace-registration.aspx).
+**Please note**: To work with this component, you need to have ONLYOFFICE Apps. If you are new to ONLYOFFICE Apps, [create an account](https://www.onlyoffice.com/docspace-registration.aspx).
 
 ## Prerequisites
 
@@ -10,7 +10,7 @@ This procedure requires [Node.js (and npm)](https://nodejs.org/en).
 
 The component supports React 18 and 19 and requires *react*, *react-dom* and *@onlyoffice/docspace-sdk-js* 2.x as peer dependencies.
 
-## Creating the demo React application with ONLYOFFICE DocSpace
+## Creating the demo React application with ONLYOFFICE Apps
 
 This procedure creates a [basic React application](https://github.com/facebook/create-react-app) and installs an ONLYOFFICE Docs editor in it.
 
@@ -24,7 +24,7 @@ This procedure creates a [basic React application](https://github.com/facebook/c
     cd docspace-react-demo
     ```
 
-3. Install ONLYOFFICE DocSpace React component from **npm** and save it to the *package.json* file with *--save*:
+3. Install ONLYOFFICE Apps React component from **npm** and save it to the *package.json* file with *--save*:
     ```
     npm install --save @onlyoffice/docspace-react @onlyoffice/docspace-sdk-js
     ```
@@ -38,7 +38,7 @@ This procedure creates a [basic React application](https://github.com/facebook/c
     import { DocSpace } from "@onlyoffice/docspace-react";
 
     const onAppReady = function (e) {
-        console.log("ONLYOFFICE DocSpace App is ready!");
+        console.log("ONLYOFFICE Apps is ready!");
     };
 
     const onAppError = (e) => {
@@ -69,9 +69,9 @@ This procedure creates a [basic React application](https://github.com/facebook/c
     }
     ```
     Replace the following lines with your own data:
-    * **"http://example-onlyoffice.com"** - replace with the address of your ONLYOFFICE DocSpace, specified without a trailing slash;
+    * **"http://example-onlyoffice.com"** - replace with the address of your ONLYOFFICE Apps instance, specified without a trailing slash;
 
-    This JavaScript file will create the *App* component containing the ONLYOFFICE DocSpace configured with basic features.
+    This JavaScript file will create the *App* component containing ONLYOFFICE Apps configured with basic features.
 
 5. Test the application using the Node.js development server:
     * To start the development server, navigate to the *docspace-react-demo* directory and run:
@@ -118,22 +118,22 @@ Now you can deploy the application to the created server:
 ### Props
 | Name | Type | Default | Required | Description |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| `config` | object | null | yes | Generic configuration object for opening a file with token. Requires `src` - the address of ONLYOFFICE DocSpace, specified without a trailing slash. [Config API](https://api.onlyoffice.com/docspace/jssdk/config/) |
-| `onSetDocspaceInstance` | (instance: SDKInstance) => void | null | no | The function called when DocSpace instance is obtained. The instance provides API methods for working with DocSpace. |
+| `config` | object | null | yes | Generic configuration object for opening a file with token. Requires `src` - the address of the ONLYOFFICE Apps instance, specified without a trailing slash. [Config API](https://api.onlyoffice.com/docspace/jssdk/config/) |
+| `onSetDocspaceInstance` | (instance: SDKInstance) => void | null | no | The function called when the ONLYOFFICE Apps instance is obtained. The instance provides API methods for working with ONLYOFFICE Apps. |
 
 ### Notes
 
-* The `config` prop is applied when the component is mounted. To change the configuration of the already opened DocSpace, use the `setConfig` method of the instance obtained via `onSetDocspaceInstance`, so that the frame is not recreated.
-* The component renders the DocSpace frame placeholder inside a wrapper element. DocSpace replaces the placeholder with its own container, so the wrapper is what keeps the component removable by React. The wrapper is styled with `display: contents` and creates no box of its own, so the frame is sized by `config.width` and `config.height` (*100%* by default) against the element you place the component in.
+* The `config` prop is applied when the component is mounted. To change the configuration of the already opened ONLYOFFICE Apps frame, use the `setConfig` method of the instance obtained via `onSetDocspaceInstance`, so that the frame is not recreated.
+* The component renders the ONLYOFFICE Apps frame placeholder inside a wrapper element. ONLYOFFICE Apps replaces the placeholder with its own container, so the wrapper is what keeps the component removable by React. The wrapper is styled with `display: contents` and creates no box of its own, so the frame is sized by `config.width` and `config.height` (*100%* by default) against the element you place the component in.
 
 ## Storybook
 
-Copy *.env.example* to *.env* and set the DocSpace the stories point at:
+Copy *.env.example* to *.env* and set the ONLYOFFICE Apps instance the stories point at:
 ```
 VITE_DOCSPACE_URL=https://example-onlyoffice.com
 VITE_DOCSPACE_FILE_ID=100000
 ```
-Only the *VITE_*-prefixed variables reach the browser. *VITE_DOCSPACE_FILE_ID* is the file the *Editor* story opens, it can be any file id from the portal above.
+Only the *VITE_*-prefixed variables reach the browser. *VITE_DOCSPACE_FILE_ID* is the file the *Editor* story opens, it can be any file id from the instance above.
 
 ### Build Storybook:
 ```
@@ -175,7 +175,7 @@ npm pack
 
 ## Feedback and support
 
-In case you have any issues, questions, or suggestions for the ONLYOFFICE DocSpace React component, please refer to the [Issues](https://github.com/ONLYOFFICE/docspace-react/issues) section.
+In case you have any issues, questions, or suggestions for the ONLYOFFICE Apps React component, please refer to the [Issues](https://github.com/ONLYOFFICE/docspace-react/issues) section.
 
 Official project website: [www.onlyoffice.com](https://www.onlyoffice.com/). 
 

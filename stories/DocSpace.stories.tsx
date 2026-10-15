@@ -22,7 +22,7 @@ import { DocSpace, type DocSpaceProps } from "../src";
 import "./stories.css";
 
 const onAppReady = () => {
-  console.log("ONLYOFFICE DocSpace App is ready!");
+  console.log("ONLYOFFICE Apps is ready!");
 };
 
 const onAppError = (e?: Event | object | string) => {

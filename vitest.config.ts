@@ -2,7 +2,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
 // Separate from vite.config.ts: that one is set up to emit the library bundle,
-// with React and the DocSpace SDK marked external.
+// with React and the ONLYOFFICE Apps SDK marked external.
 export default defineConfig({
   plugins: [react()],
   test: {
