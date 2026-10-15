@@ -6,7 +6,9 @@ on:
     # Everything left out here cannot change the outcome of a run: docs, the
     # license, the sample environment file and the workflows that do not build,
     # lint or test the package.
-    paths-ignore: &ci-paths-ignore
+    # The list is repeated under pull_request on purpose: Gitea Actions does not
+    # resolve YAML anchors, so a shared anchor stops the workflow from running.
+    paths-ignore:
       - '**/*.md'
       - 'LICENSE'
       - '.env.example'
@@ -16,7 +18,15 @@ on:
       - '.github/workflows/licenses.yml'
       - '.github/workflows/release.yml'
   pull_request:
-    paths-ignore: *ci-paths-ignore
+    paths-ignore:
+      - '**/*.md'
+      - 'LICENSE'
+      - '.env.example'
+      - '.gitignore'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/workflows/create-tag.yml'
+      - '.github/workflows/licenses.yml'
+      - '.github/workflows/release.yml'
 
 permissions:
   contents: read

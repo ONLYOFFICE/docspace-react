@@ -4,7 +4,9 @@ on:
   workflow_dispatch:
   push:
     branches: [master, develop]
-    paths: &license-paths
+    # Repeated under pull_request on purpose: Gitea Actions does not resolve
+    # YAML anchors, so a shared anchor stops the workflow from running.
+    paths:
       - 'package.json'
       - 'package-lock.json'
       - '.check-licenses.yml'
@@ -12,7 +14,12 @@ on:
       - '.github/workflows/licenses.yml'
   pull_request:
     branches: [master, develop]
-    paths: *license-paths
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - '.check-licenses.yml'
+      - 'doc/dependency_decisions.yml'
+      - '.github/workflows/licenses.yml'
 
 permissions:
   contents: read
