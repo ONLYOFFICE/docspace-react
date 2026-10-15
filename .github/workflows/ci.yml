@@ -6,7 +6,9 @@ on:
     # Everything left out here cannot change the outcome of a run: docs, the
     # license, the sample environment file and the workflows that do not build,
     # lint or test the package.
-    paths-ignore: &ci-paths-ignore
+    # The list is repeated under pull_request on purpose: Gitea Actions does not
+    # resolve YAML anchors, so a shared anchor stops the workflow from running.
+    paths-ignore:
       - '**/*.md'
       - 'LICENSE'
       - '.env.example'
@@ -16,7 +18,15 @@ on:
       - '.github/workflows/licenses.yml'
       - '.github/workflows/release.yml'
   pull_request:
-    paths-ignore: *ci-paths-ignore
+    paths-ignore:
+      - '**/*.md'
+      - 'LICENSE'
+      - '.env.example'
+      - '.gitignore'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/workflows/create-tag.yml'
+      - '.github/workflows/licenses.yml'
+      - '.github/workflows/release.yml'
 
 permissions:
   contents: read
@@ -43,8 +53,14 @@ jobs:
         run: npm run lint
 
   typecheck:
-    name: Typecheck
+    name: Typecheck (React ${{ matrix.react }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Every major in the react peer range. The lockfile pins the newest one,
+        # the others are installed over it.
+        react: [18, 19]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
@@ -55,14 +71,21 @@ jobs:
           cache: npm
       - name: Install Dependencies
         run: npm ci
+      - name: Install React ${{ matrix.react }}
+        if: ${{ matrix.react != 19 }}
+        run: npm install --no-save react@${{ matrix.react }} react-dom@${{ matrix.react }} @types/react@${{ matrix.react }} @types/react-dom@${{ matrix.react }}
       # The solution covers src, stories, tests, the Storybook config and the
       # Vite configs, so this is wider than what the build alone would check.
       - name: Check Types
         run: npx tsc -b --force
 
   test:
-    name: Test
+    name: Test (React ${{ matrix.react }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        react: [18, 19]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v7
@@ -73,13 +96,25 @@ jobs:
           cache: npm
       - name: Install Dependencies
         run: npm ci
+      - name: Install React ${{ matrix.react }}
+        if: ${{ matrix.react != 19 }}
+        run: npm install --no-save react@${{ matrix.react }} react-dom@${{ matrix.react }} @types/react@${{ matrix.react }} @types/react-dom@${{ matrix.react }}
       - name: Run Tests
         run: npm run test:coverage
       - name: Upload Coverage Report
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && github.server_url == 'https://github.com' }}
         uses: actions/upload-artifact@v7
         with:
-          name: coverage
+          name: coverage-react-${{ matrix.react }}
+          path: coverage
+          retention-days: 7
+      # actions/upload-artifact@v4+ takes Gitea for GHES and refuses to run; this
+      # fork is the same action without that check.
+      - name: Upload Coverage Report (Gitea)
+        if: ${{ !cancelled() && github.server_url != 'https://github.com' }}
+        uses: christopherHX/gitea-upload-artifact@v4
+        with:
+          name: coverage-react-${{ matrix.react }}
           path: coverage
           retention-days: 7
 

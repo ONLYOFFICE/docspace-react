@@ -1,5 +1,5 @@
 /*
-* (c) Copyright Ascensio System SIA 2025
+* (c) Copyright Ascensio System SIA 2026
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,11 +14,5 @@
 * limitations under the License.
 */
 
-
-export const stripTrailingSlash = (url: string) => {
-  if (url.endsWith("/")) {
-    return url.slice(0, -1);
-  }
-
-  return url;
-}
+export { DocSpace } from "./DocSpace";
+export type { DocSpaceProps } from "./DocSpace";

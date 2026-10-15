@@ -1,5 +1,5 @@
 /*
-* (c) Copyright Ascensio System SIA 2025
+* (c) Copyright Ascensio System SIA 2026
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,4 +14,5 @@
 * limitations under the License.
 */
 
-export { default as DocSpace } from "./DocSpace";
+export { DocSpace } from "./components/DocSpace";
+export type { DocSpaceProps } from "./components/DocSpace";
